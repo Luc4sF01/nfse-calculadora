@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora NFS-e</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .resultado {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora NFS-e</h1>
+        <form id="formulario">
+            <label for="valor">Valor da Venda (R$):</label>
+            <input type="number" id="valor" step="0.01" required>
+
+            <label for="itens">Itens Vendidos:</label>
+            <input type="text" id="itens" required>
+
+            <label for="irpf">Imposto IRPF (%):</label>
+            <input type="number" id="irpf" step="0.01" required>
+
+            <label for="pis">Imposto PIS (%):</label>
+            <input type="number" id="pis" step="0.01" required>
+
+            <label for="cofins">Imposto COFINS (%):</label>
+            <input type="number" id="cofins" step="0.01" required>
+
+            <label for="inss">Imposto INSS (%):</label>
+            <input type="number" id="inss" step="0.01" required>
+
+            <label for="issqn">Imposto ISSQN (%):</label>
+            <input type="number" id="issqn" step="0.01" required>
+
+            <button type="button" id="calcular">Calcular Nota Fiscal</button>
+        </form>
+
+        <div class="resultado" id="resultado"></div>
+    </div>
+
+    <script>
+        document.getElementById('calcular').addEventListener('click', () => {
+            const valor = parseFloat(document.getElementById('valor').value);
+            const itens = document.getElementById('itens').value;
+            const irpf = parseFloat(document.getElementById('irpf').value);
+            const pis = parseFloat(document.getElementById('pis').value);
+            const cofins = parseFloat(document.getElementById('cofins').value);
+            const inss = parseFloat(document.getElementById('inss').value);
+            const issqn = parseFloat(document.getElementById('issqn').value);
+
+            if (isNaN(valor) || isNaN(irpf) || isNaN(pis) || isNaN(cofins) || isNaN(inss) || isNaN(issqn)) {
+                alert('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+
+            const totalImpostos = (valor * irpf / 100) +
+                                  (valor * pis / 100) +
+                                  (valor * cofins / 100) +
+                                  (valor * inss / 100) +
+                                  (valor * issqn / 100);
+
+            const valorLiquido = valor - totalImpostos;
+
+            document.getElementById('resultado').innerHTML = `
+                <h3>Nota Fiscal de Serviço</h3>
+                <p><strong>Itens Vendidos:</strong> ${itens}</p>
+                <p><strong>Valor Bruto:</strong> R$ ${valor.toFixed(2)}</p>
+                <p><strong>Total de Impostos:</strong> R$ ${totalImpostos.toFixed(2)}</p>
+                <p><strong>Valor Líquido:</strong> R$ ${valorLiquido.toFixed(2)}</p>
+            `;
+        });
+    </script>
+</body>
+</html>
